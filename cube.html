@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
+    </head>
+    <body>
+        <h1>three.js with pyscript </h1>
+        <py-script>
+from pyodide import create_proxy
+
+from js import THREE, window, document
+
+scene = THREE.Scene.new();
+camera = THREE.PerspectiveCamera.new(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+renderer = THREE.WebGLRenderer.new()
+renderer.setSize(window.innerWidth, window.innerHeight)
+
+geometry = THREE.BoxGeometry.new()
+material = THREE.MeshBasicMaterial.new(color="#00ff00")
+cube = THREE.Mesh.new( geometry, material )
+scene.add( cube )
+
+camera.position.z = 5
+renderer.render( scene, camera )
+
+def animate(*args):
+    window.requestAnimationFrame( create_proxy(animate) )
+    cube.rotation.x += 0.01
+    cube.rotation.y += 0.01
+    renderer.render( scene, camera )
+
+animate()
+
+document.body.appendChild( renderer.domElement )
+        </py-script>
+    </body>
+</html>
