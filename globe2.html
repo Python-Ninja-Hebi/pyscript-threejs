@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>pyscript globe</title>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <script src="./js/three.min.js"></script>
+        <script src="./examples/js/loaders/GLTFLoader.js"></script>
+        <script src="./examples/js/controls/OrbitControls.js"></script>
+        <py-env>
+            - osmpythontools
+        </py-env>
+        <style>
+            body { margin: 0;}
+            canvas{width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body>
+        <b><p>Lat is <u><label id='lat'></label></u></p></b>
+        <br>
+        <py-script>
+from pyodide import create_proxy
+
+from js import THREE, window, document
+
+pyscript.write('lat', 1.25)
+
+scene = THREE.Scene.new();
+
+light = THREE.AmbientLight.new( 0x777777 )
+scene.add( light )
+
+light = THREE.DirectionalLight.new( 0xffffff, 0.5 )
+light.position.set(3, 5, 1)
+
+camera = THREE.PerspectiveCamera.new(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+camera.position.set(0, 5, 3)
+camera.add(light)
+
+renderer = THREE.WebGLRenderer.new()
+renderer.setSize(window.innerWidth, window.innerHeight)
+
+controls = THREE.OrbitControls.new( camera, renderer.domElement );
+
+geometry = THREE.SphereGeometry.new(0.5, 32, 32)
+#material = THREE.MeshBasicMaterial.new(color="#00ff00")
+
+material = THREE.MeshPhongMaterial.new()
+texture = THREE.TextureLoader.new().load("./eo_base_2020_clean_720x360.jpg")
+material.map = texture
+
+sphere = THREE.Mesh.new( geometry, material )
+scene.add( sphere )
+
+renderer.render( scene, camera )
+document.body.appendChild( renderer.domElement )
+
+def animate(*args):
+    window.requestAnimationFrame( create_proxy(animate) )
+
+    controls.update()
+    renderer.render( scene, camera )
+
+animate()
+        </py-script>
+    </body>
+</html>

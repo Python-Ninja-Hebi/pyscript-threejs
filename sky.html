@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>pyscript sky</title>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <script src="./js/three.min.js"></script>
+        <script src="./examples/js/loaders/GLTFLoader.js"></script>
+        <script src="./examples/js/controls/OrbitControls.js"></script>
+        <style>
+            body { margin: 0;}
+            canvas{width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body>
+        <py-script>
+from pyodide import create_proxy
+
+from js import THREE, window, document, console, Array
+
+scene = THREE.Scene.new()
+camera = THREE.PerspectiveCamera.new(55, window.innerWidth/window.innerHeight,45,30000)
+camera.position.set(1200, -250, 2000)
+
+renderer = THREE.WebGLRenderer.new()
+renderer.setSize(window.innerWidth, window.innerHeight)
+
+document.body.appendChild(renderer.domElement)
+
+controls = THREE.OrbitControls.new(camera, renderer.domElement)
+controls.enabled = True
+controls.minDistance = 700
+controls.maxDistance = 1500
+controls.autoRotate = True
+controls.autoRotateSpeed = 1.0
+
+ft = THREE.TextureLoader.new().load("skybox_front.png")
+bk = THREE.TextureLoader.new().load("skybox_back.png")
+up = THREE.TextureLoader.new().load("skybox_up.png")
+dn = THREE.TextureLoader.new().load("skybox_down.png")
+rt = THREE.TextureLoader.new().load("skybox_right.png")
+lf = THREE.TextureLoader.new().load("skybox_left.png")
+
+textures = [ft, bk, up, dn, rt, lf]
+
+materials = Array.new()
+
+for i in textures:
+  mat = THREE.MeshBasicMaterial.new()
+  mat.map = i
+  mat.side = THREE.BackSide
+  materials.push(mat)
+
+skyboxGeo = THREE.BoxGeometry.new(10000, 10000, 10000)
+skybox = THREE.Mesh.new(skyboxGeo, materials)
+
+scene.add(skybox)
+
+def animate(*args):
+    window.requestAnimationFrame( create_proxy(animate) )
+
+    controls.update()
+    renderer.render( scene, camera )
+
+animate()
+        </py-script>
+    </body>
+</html>
