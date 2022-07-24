@@ -1,0 +1,27 @@
+<html>
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <link href="./styles.css" rel="stylesheet" type="text/css">
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
+        <script scr="./examples/js/loaders/FBXLoader.js"></script>
+        <script src="./examples/js/controls/OrbitControls.js"></script>
+    </head>
+    <body>
+        <h1>three.js with pyscript </h1>
+        <div id="container">
+        </div>
+        <py-script>
+
+from pyodide import create_proxy, to_js
+from js import THREE, window, document, Array
+
+loader = THREE.FBXLoader.new()
+
+       </py-script>
+    </body>
+</html>

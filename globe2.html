@@ -1,28 +1,43 @@
 <html>
     <head>
         <title>pyscript globe</title>
-        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
         <script src="./js/three.min.js"></script>
         <script src="./examples/js/loaders/GLTFLoader.js"></script>
         <script src="./examples/js/controls/OrbitControls.js"></script>
-        <py-env>
-            - osmpythontools
-        </py-env>
         <style>
             body { margin: 0;}
             canvas{width: 100%; height: 100%;}
         </style>
     </head>
     <body>
-        <b><p>Lat is <u><label id='lat'></label></u></p></b>
-        <br>
+        <py-title>Globe with Location Search</py-title>
+        <py-box widths="4/5;1/5">
+            <py-inputbox id="new-task-content">
+            </py-inputbox>
+            <py-button id="new-task-btn" label="search">
+def on_click(evt):
+    get_from_photon(new_task_content.value)
+            </py-button>
+        </py-box>
+        <ul>
+            <li >milk</li>
+            <li >eggs</li>
+            <li>bread</li>
+        </ul>
+        <p id="msg">    </p>
         <py-script>
-from pyodide import create_proxy
+import pyodide
+import json
 
+from pyodide import create_proxy
 from js import THREE, window, document
 
-pyscript.write('lat', 1.25)
+def get_from_photon(search):
+    url = 'https://photon.komoot.io/api/?q=' + search.replace(' ', '+')
+    response = pyodide.open_url(url)
+    Element('msg').write(json.loads(response.getvalue()))
 
 scene = THREE.Scene.new();
 

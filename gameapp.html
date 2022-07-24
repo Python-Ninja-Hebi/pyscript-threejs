@@ -1,0 +1,28 @@
+<html>
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <link href="./styles.css" rel="stylesheet" type="text/css">
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
+        <py-env>
+            - paths:
+              - wonderworldjs.py
+        </py-env>
+    </head>
+    <body>
+        <h1>ECS three.js with pyscript </h1>
+        <div id="container">
+        </div>
+        <py-script>
+from wonderworldjs import *
+
+app = App()
+app.add_resource("container","#container")
+app.run()
+        </py-script>
+    </body>
+</html>
