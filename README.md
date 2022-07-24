@@ -16,7 +16,7 @@ Many things about styles from https://discoverthreejs.com
 
 Thanks for the textures to https://opengameart.org/content/space-nebulas-skybox
 
-<img src="img/basic.gif" width="520" align="left"><br><br><br><br><br><br><br><br>
+<img src="img/basic.gif" width="520" align="left"><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ## cube
 
